@@ -19,6 +19,7 @@ final readonly class PublishConfigFilesAction
             'rector.php' => 'rector.php',
             'release-it.json' => '.release-it.json',
         ];
-        return array_all($files, fn(string $destination, string $stub): bool => $this->fileManager->copyStub($stub, $destination));
+
+        return array_all($files, fn (string $destination, string $stub): bool => $this->fileManager->copyStub($stub, $destination));
     }
 }

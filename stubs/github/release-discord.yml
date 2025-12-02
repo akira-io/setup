@@ -2,47 +2,23 @@ name: Release to Discord
 
 on:
   release:
-    types: [published]
+    types: [ published ]
 
 jobs:
-  notify:
+  github-releases-to-discord:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Get Release Info
-        id: release
-        run: |
-          echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
-          echo "name=${{ github.event.release.name }}" >> $GITHUB_OUTPUT
-          echo "url=${{ github.event.release.html_url }}" >> $GITHUB_OUTPUT
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Send Discord Notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: |
-          curl -H "Content-Type: application/json" \
-               -d '{
-                 "embeds": [{
-                   "title": "🚀 New Release: ${{ steps.release.outputs.name }}",
-                   "description": "A new version has been released!",
-                   "url": "${{ steps.release.outputs.url }}",
-                   "color": 5814783,
-                   "fields": [
-                     {
-                       "name": "Version",
-                       "value": "`${{ steps.release.outputs.tag }}`",
-                       "inline": true
-                     },
-                     {
-                       "name": "Repository",
-                       "value": "[${{ github.repository }}](https://github.com/${{ github.repository }})",
-                       "inline": true
-                     }
-                   ],
-                   "footer": {
-                     "text": "GitHub Release"
-                   },
-                   "timestamp": "${{ github.event.release.published_at }}"
-                 }]
-               }' \
-               $DISCORD_WEBHOOK
+      - name: Github Releases To Discord
+        uses: SethCohen/github-releases-to-discord@v1.19.0
+        with:
+          webhook_url: ${{ secrets.DISCORD }}
+          color: "2105893"
+          username: "Release Notification"
+          avatar_url: "https://github.com/laravel.png"
+          content: "||@everyone||"
+          footer_title: "GitHub Releases"
+          footer_icon_url: "https://github.com/laravel.png"
+          footer_timestamp: true

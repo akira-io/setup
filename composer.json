@@ -32,7 +32,8 @@
         "pestphp/pest-plugin-laravel": "^3.0",
         "akira/laravel-debugger": "v1.3.1",
         "rector/rector": "^2.0",
-        "driftingly/rector-laravel": "^2.1"
+        "driftingly/rector-laravel": "^2.1",
+        "peckphp/peck": "^0.2"
     },
     "autoload": {
         "psr-4": {
