@@ -280,3 +280,46 @@ it('can be instantiated with custom Filesystem', function () {
     
     expect($fm)->toBeInstanceOf(FileManager::class);
 });
+
+it('updateJson successfully merges data', function () {
+    // Create a real JSON file
+    $testFile = base_path('test-merge.json');
+    file_put_contents($testFile, json_encode(['existing' => 'value'], JSON_THROW_ON_ERROR));
+    
+    $fm = new FileManager();
+    $result = $fm->updateJson('test-merge.json', ['new' => 'data']);
+    
+    expect($result)->toBeTrue();
+    
+    $content = json_decode(file_get_contents($testFile), true, 512, JSON_THROW_ON_ERROR);
+    expect($content)->toHaveKey('existing')
+        ->and($content)->toHaveKey('new');
+    
+    unlink($testFile);
+});
+
+it('merges array scripts when both existing and new are arrays', function () {
+    // Create composer.json with array scripts
+    $composerPath = base_path('composer.json');
+    file_put_contents($composerPath, json_encode([
+        'name' => 'test/project',
+        'scripts' => [
+            'test' => ['pest', 'phpstan'],
+        ],
+    ], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT));
+    
+    $fm = new FileManager();
+    $result = $fm->mergeComposerScripts([
+        'test' => ['pint'],
+    ]);
+    
+    expect($result)->toBeTrue();
+    
+    $composer = json_decode(file_get_contents($composerPath), true, 512, JSON_THROW_ON_ERROR);
+    expect($composer['scripts']['test'])->toBeArray()
+        ->and($composer['scripts']['test'])->toContain('pest')
+        ->and($composer['scripts']['test'])->toContain('phpstan')
+        ->and($composer['scripts']['test'])->toContain('pint');
+    
+    unlink($composerPath);
+});
