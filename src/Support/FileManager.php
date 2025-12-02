@@ -38,6 +38,11 @@ final readonly class FileManager
         }
 
         $current = json_decode($this->files->get($fullPath), true);
+
+        if (! is_array($current)) {
+            return false;
+        }
+
         $merged = array_merge_recursive($current, $data);
 
         return $this->files->put(
@@ -57,27 +62,41 @@ final readonly class FileManager
             return false;
         }
 
-        $composer = json_decode($this->files->get($composerPath), true);
+        $composerContent = json_decode($this->files->get($composerPath), true);
 
-        if (! isset($composer['scripts'])) {
+        if (! is_array($composerContent)) {
+            return false;
+        }
+
+        /** @var array<string, mixed> $composer */
+        $composer = $composerContent;
+
+        if (! isset($composer['scripts']) || ! is_array($composer['scripts'])) {
             $composer['scripts'] = [];
         }
 
+        /** @var array<string, mixed> $composerScripts */
+        $composerScripts = $composer['scripts'];
+
         foreach ($scripts as $key => $value) {
-            if (isset($composer['scripts'][$key])) {
-                if (is_array($value) && is_array($composer['scripts'][$key])) {
-                    $composer['scripts'][$key] = array_unique(
-                        array_merge($composer['scripts'][$key], $value)
+            if (isset($composerScripts[$key])) {
+                $existingValue = $composerScripts[$key];
+
+                if (is_array($value) && is_array($existingValue)) {
+                    $composerScripts[$key] = array_unique(
+                        array_merge($existingValue, $value)
                     );
-                } elseif (is_string($value) && is_string($composer['scripts'][$key])) {
-                    if ($composer['scripts'][$key] !== $value) {
-                        $composer['scripts'][$key] = [$composer['scripts'][$key], $value];
+                } elseif (is_string($value) && is_string($existingValue)) {
+                    if ($existingValue !== $value) {
+                        $composerScripts[$key] = [$existingValue, $value];
                     }
                 }
             } else {
-                $composer['scripts'][$key] = $value;
+                $composerScripts[$key] = $value;
             }
         }
+
+        $composer['scripts'] = $composerScripts;
 
         return $this->files->put(
             $composerPath,
@@ -96,13 +115,23 @@ final readonly class FileManager
             return false;
         }
 
-        $package = json_decode($this->files->get($packagePath), true);
+        $packageContent = json_decode($this->files->get($packagePath), true);
 
-        if (! isset($package['scripts'])) {
+        if (! is_array($packageContent)) {
+            return false;
+        }
+
+        /** @var array<string, mixed> $package */
+        $package = $packageContent;
+
+        if (! isset($package['scripts']) || ! is_array($package['scripts'])) {
             $package['scripts'] = [];
         }
 
-        $package['scripts'] = array_merge($package['scripts'], $scripts);
+        /** @var array<string, mixed> $packageScripts */
+        $packageScripts = $package['scripts'];
+
+        $package['scripts'] = array_merge($packageScripts, $scripts);
 
         return $this->files->put(
             $packagePath,

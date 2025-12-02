@@ -20,22 +20,26 @@ trait CollectsUserChoices
     {
         note('Select the packages and features you want to install.');
 
+        /** @var array<string> $phpRequire */
         $phpRequire = multiselect(
             label: 'Select PHP packages to require:',
             options: PhpPackage::toOptions(),
             default: PhpPackage::allValues(),
         );
 
+        /** @var array<string> $phpRequireDev */
         $phpRequireDev = multiselect(
             label: 'Select PHP dev packages to require:',
             options: PhpDevPackage::toOptions(),
             default: PhpDevPackage::allValues(),
         );
 
+        /** @var array<string> $nodeDevDependencies */
         $nodeDevDependencies = [];
         $nodePackageManager = 'npm';
 
         if ($this->packageDetector->hasPackageJson()) {
+            /** @var array<string> $nodeDevDependencies */
             $nodeDevDependencies = multiselect(
                 label: 'Select Node.js dev dependencies:',
                 options: NodeDevPackage::toOptions(),
@@ -44,7 +48,7 @@ trait CollectsUserChoices
 
             $detectedManager = $this->packageDetector->detectNodePackageManager();
 
-            $nodePackageManager = select(
+            $nodePackageManager = (string) select(
                 label: 'Select Node package manager:',
                 options: ['npm', 'pnpm', 'yarn', 'bun'],
                 default: $detectedManager,

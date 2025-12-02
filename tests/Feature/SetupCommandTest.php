@@ -10,8 +10,7 @@ it('registers setup command', function (): void {
 
 it('has correct command signature', function (): void {
     expect(
-        $this->app->make(Akira\Setup\Console\SetupCommand::class)
-    )->toHaveProperty('signature', 'akira:setup');
+        $this->app->make(Akira\Setup\Console\SetupCommand::class))->toHaveProperty('signature', 'akira:setup');
 });
 
 it('has correct command description', function (): void {
