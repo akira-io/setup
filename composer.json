@@ -24,17 +24,17 @@
         "symfony/process": "^7.0"
     },
     "require-dev": {
-        "larastan/larastan": "^3.0",
+        "akira/laravel-debugger": "v1.3.1",
+        "driftingly/rector-laravel": "^2.1",
+        "larastan/larastan": "^3.8",
         "laravel/pint": "^1.18",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.5",
         "orchestra/testbench": "^10.0",
+        "peckphp/peck": "^0.2",
         "pestphp/pest": "^4.0",
         "pestphp/pest-plugin-laravel": "^4.0",
-        "akira/laravel-debugger": "v1.3.1",
-        "rector/rector": "^2.0",
-        "driftingly/rector-laravel": "^2.1",
-        "peckphp/peck": "^0.2"
+        "rector/rector": "^2.0"
     },
     "autoload": {
         "psr-4": {
