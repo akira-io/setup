@@ -34,3 +34,11 @@ it('checks for package.json existence', function (): void {
 
     expect($detector->hasPackageJson())->toBeBool();
 });
+
+it('returns npm as fallback package manager', function () {
+    $detector = new PackageDetector();
+    $manager = $detector->detectNodePackageManager();
+    
+    // Will be one of the supported managers, npm as fallback
+    expect($manager)->toBeIn(['npm', 'pnpm', 'yarn', 'bun']);
+});
