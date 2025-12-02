@@ -9,16 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v6
       - name: Github Releases To Discord
         uses: SethCohen/github-releases-to-discord@v1.19.0
         with:
           webhook_url: ${{ secrets.DISCORD }}
           color: "2105893"
-          username: "Release Notification"
-          avatar_url: "https://github.com/laravel.png"
+          username: "Akira Setup"
+          avatar_url: "https://avatars.githubusercontent.com/u/116525492?s=96&v=4"
           content: "||@everyone||"
-          footer_title: "GitHub Releases"
-          footer_icon_url: "https://github.com/laravel.png"
+          footer_title: "Akira Setup"
+          footer_icon_url: "https://avatars.githubusercontent.com/u/116525492?s=96&v=4"
           footer_timestamp: true
