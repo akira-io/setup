@@ -15,6 +15,11 @@ beforeEach(function (): void {
         $this->composerBackup = File::get($this->originalComposerPath);
     }
 
+    // Ensure base directory exists
+    if (!File::isDirectory(base_path())) {
+        File::makeDirectory(base_path(), 0755, true);
+    }
+
     // Create temporary composer.json
     File::put($this->originalComposerPath, json_encode([
         'name' => 'test/project',
