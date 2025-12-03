@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 use Akira\Setup\Console\SetupCommand;
 use Akira\Setup\DTOs\PackageSelection;
-use Akira\Setup\Enums\NodeDevPackage;
-use Akira\Setup\Enums\PhpDevPackage;
-use Akira\Setup\Enums\PhpPackage;
 use Illuminate\Support\Facades\File;
-use Laravel\Prompts\Prompt;
-
-use function Pest\Laravel\artisan;
 
 beforeEach(function (): void {
     // Create temporary composer.json
@@ -56,7 +50,7 @@ it('collectUserChoices method exists and has correct signature', function (): vo
     $method = $reflection->getMethod('collectUserChoices');
 
     expect($method->isPrivate())->toBeTrue()
-        ->and($method->getReturnType()->getName())->toBe('Akira\Setup\DTOs\PackageSelection');
+        ->and($method->getReturnType()->getName())->toBe(PackageSelection::class);
 });
 
 it('installPhpRequire is called with packages', function (): void {
@@ -72,7 +66,6 @@ it('installPhpRequire is called with packages', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('installPhpRequire');
-    $method->setAccessible(true);
 
     // Should not throw
     $method->invoke($command, $selection);
@@ -93,7 +86,6 @@ it('installPhpRequireDev is called with packages', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('installPhpRequireDev');
-    $method->setAccessible(true);
 
     $method->invoke($command, $selection);
 
@@ -113,7 +105,6 @@ it('installNodePackages is called with packages', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('installNodePackages');
-    $method->setAccessible(true);
 
     $method->invoke($command, $selection);
 
@@ -125,7 +116,6 @@ it('addComposerScripts is called', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('addComposerScripts');
-    $method->setAccessible(true);
 
     $method->invoke($command);
 
@@ -137,7 +127,6 @@ it('addPackageJsonScripts is called', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('addPackageJsonScripts');
-    $method->setAccessible(true);
 
     $method->invoke($command);
 
@@ -149,7 +138,6 @@ it('publishConfigFiles is called', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('publishConfigFiles');
-    $method->setAccessible(true);
 
     $method->invoke($command);
 
@@ -161,7 +149,6 @@ it('publishWorkflows is called', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('publishWorkflows');
-    $method->setAccessible(true);
 
     $method->invoke($command);
 
@@ -181,7 +168,6 @@ it('displaySummary is called with all packages', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('displaySummary');
-    $method->setAccessible(true);
 
     $method->invoke($command, $selection);
 
@@ -201,7 +187,6 @@ it('displaySummary is called with no packages', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('displaySummary');
-    $method->setAccessible(true);
 
     $method->invoke($command, $selection);
 
@@ -221,7 +206,6 @@ it('executeSetup handles all match cases', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('executeSetup');
-    $method->setAccessible(true);
 
     $method->invoke($command, $selection);
 
@@ -241,7 +225,6 @@ it('calculateSteps includes all possible steps', function (): void {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('calculateSteps');
-    $method->setAccessible(true);
 
     $steps = $method->invoke($command, $selection);
 
@@ -254,7 +237,7 @@ it('calculateSteps includes all possible steps', function (): void {
         ->and($steps)->toContain('workflows');
 });
 
-it('calculateSteps includes package-json-scripts when package.json exists', function () {
+it('calculateSteps includes package-json-scripts when package.json exists', function (): void {
 
     if (! file_exists(base_path('package.json'))) {
         File::put(base_path('package.json'), json_encode(['name' => 'test']));
@@ -272,7 +255,6 @@ it('calculateSteps includes package-json-scripts when package.json exists', func
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('calculateSteps');
-    $method->setAccessible(true);
 
     $steps = $method->invoke($command, $selection);
 
@@ -283,7 +265,7 @@ it('calculateSteps includes package-json-scripts when package.json exists', func
     }
 });
 
-it('executeSetup invokes all step handlers', function () {
+it('executeSetup invokes all step handlers', function (): void {
     $command = $this->app->make(SetupCommand::class);
 
     $selection = new PackageSelection(
@@ -296,7 +278,6 @@ it('executeSetup invokes all step handlers', function () {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('executeSetup');
-    $method->setAccessible(true);
 
     // Execute without throwing
     $method->invoke($command, $selection);
@@ -304,7 +285,7 @@ it('executeSetup invokes all step handlers', function () {
     expect(true)->toBeTrue();
 });
 
-it('executeSetup handles empty selection gracefully', function () {
+it('executeSetup handles empty selection gracefully', function (): void {
     $command = $this->app->make(SetupCommand::class);
 
     $selection = new PackageSelection(
@@ -317,14 +298,13 @@ it('executeSetup handles empty selection gracefully', function () {
 
     $reflection = new ReflectionClass($command);
     $method = $reflection->getMethod('executeSetup');
-    $method->setAccessible(true);
 
     $method->invoke($command, $selection);
 
     expect(true)->toBeTrue();
 });
 
-it('match statement has default case', function () {
+it('match statement has default case', function (): void {
     $reflection = new ReflectionClass(SetupCommand::class);
     $method = $reflection->getMethod('executeSetup');
 
@@ -339,7 +319,7 @@ it('match statement has default case', function () {
     expect($methodCode)->toContain('default => null');
 });
 
-it('all match cases are covered', function () {
+it('all match cases are covered', function (): void {
     $reflection = new ReflectionClass(SetupCommand::class);
     $method = $reflection->getMethod('executeSetup');
 
@@ -366,7 +346,7 @@ it('all match cases are covered', function () {
     }
 });
 
-it('handle method flow is correct', function () {
+it('handle method flow is correct', function (): void {
     $reflection = new ReflectionClass(SetupCommand::class);
     $method = $reflection->getMethod('handle');
 
@@ -389,7 +369,7 @@ it('handle method flow is correct', function () {
         ->and($methodCode)->toContain('SUCCESS');
 });
 
-it('executeSetup calls displaySummary', function () {
+it('executeSetup calls displaySummary', function (): void {
     $reflection = new ReflectionClass(SetupCommand::class);
     $method = $reflection->getMethod('executeSetup');
 
@@ -404,7 +384,7 @@ it('executeSetup calls displaySummary', function () {
     expect($methodCode)->toContain('displaySummary($selection)');
 });
 
-it('executeSetup uses progress function', function () {
+it('executeSetup uses progress function', function (): void {
     $reflection = new ReflectionClass(SetupCommand::class);
     $method = $reflection->getMethod('executeSetup');
 

@@ -9,22 +9,28 @@ use Akira\Setup\DTOs\PackageSelection;
 use Akira\Setup\Support\PackageDetector;
 use Illuminate\Console\Command;
 
-it('installPhpRequire executes without error when packages provided', function () {
-    $command = new class extends Command {
+it('installPhpRequire executes without error when packages provided', function (): void {
+    $command = new class extends Command
+    {
         use InstallsPackages;
-        
+
+        /**
+         * @var InstallPhpPackagesAction
+         */
         public $installPhpPackages;
-        
-        public function __construct() {
+
+        public function __construct()
+        {
             parent::__construct();
             $this->installPhpPackages = new InstallPhpPackagesAction();
         }
-        
-        public function testInstallPhpRequire(PackageSelection $selection): void {
+
+        public function testInstallPhpRequire(PackageSelection $selection): void
+        {
             $this->installPhpRequire($selection);
         }
     };
-    
+
     $selection = new PackageSelection(
         phpRequire: ['vendor/package'],
         phpRequireDev: [],
@@ -32,28 +38,34 @@ it('installPhpRequire executes without error when packages provided', function (
         installWorkflows: false,
         nodePackageManager: 'npm'
     );
-    
+
     $command->testInstallPhpRequire($selection);
-    
+
     expect(true)->toBeTrue();
 });
 
-it('installPhpRequire skips when no packages provided', function () {
-    $command = new class extends Command {
+it('installPhpRequire skips when no packages provided', function (): void {
+    $command = new class extends Command
+    {
         use InstallsPackages;
-        
+
+        /**
+         * @var InstallPhpPackagesAction
+         */
         public $installPhpPackages;
-        
-        public function __construct() {
+
+        public function __construct()
+        {
             parent::__construct();
             $this->installPhpPackages = new InstallPhpPackagesAction();
         }
-        
-        public function testInstallPhpRequire(PackageSelection $selection): void {
+
+        public function testInstallPhpRequire(PackageSelection $selection): void
+        {
             $this->installPhpRequire($selection);
         }
     };
-    
+
     $selection = new PackageSelection(
         phpRequire: [],
         phpRequireDev: [],
@@ -61,28 +73,34 @@ it('installPhpRequire skips when no packages provided', function () {
         installWorkflows: false,
         nodePackageManager: 'npm'
     );
-    
+
     $command->testInstallPhpRequire($selection);
-    
+
     expect(true)->toBeTrue();
 });
 
-it('installPhpRequireDev executes without error when packages provided', function () {
-    $command = new class extends Command {
+it('installPhpRequireDev executes without error when packages provided', function (): void {
+    $command = new class extends Command
+    {
         use InstallsPackages;
-        
+
+        /**
+         * @var InstallPhpPackagesAction
+         */
         public $installPhpPackages;
-        
-        public function __construct() {
+
+        public function __construct()
+        {
             parent::__construct();
             $this->installPhpPackages = new InstallPhpPackagesAction();
         }
-        
-        public function testInstallPhpRequireDev(PackageSelection $selection): void {
+
+        public function testInstallPhpRequireDev(PackageSelection $selection): void
+        {
             $this->installPhpRequireDev($selection);
         }
     };
-    
+
     $selection = new PackageSelection(
         phpRequire: [],
         phpRequireDev: ['vendor/dev-package'],
@@ -90,28 +108,34 @@ it('installPhpRequireDev executes without error when packages provided', functio
         installWorkflows: false,
         nodePackageManager: 'npm'
     );
-    
+
     $command->testInstallPhpRequireDev($selection);
-    
+
     expect(true)->toBeTrue();
 });
 
-it('installPhpRequireDev skips when no packages provided', function () {
-    $command = new class extends Command {
+it('installPhpRequireDev skips when no packages provided', function (): void {
+    $command = new class extends Command
+    {
         use InstallsPackages;
-        
+
+        /**
+         * @var InstallPhpPackagesAction
+         */
         public $installPhpPackages;
-        
-        public function __construct() {
+
+        public function __construct()
+        {
             parent::__construct();
             $this->installPhpPackages = new InstallPhpPackagesAction();
         }
-        
-        public function testInstallPhpRequireDev(PackageSelection $selection): void {
+
+        public function testInstallPhpRequireDev(PackageSelection $selection): void
+        {
             $this->installPhpRequireDev($selection);
         }
     };
-    
+
     $selection = new PackageSelection(
         phpRequire: [],
         phpRequireDev: [],
@@ -119,30 +143,40 @@ it('installPhpRequireDev skips when no packages provided', function () {
         installWorkflows: false,
         nodePackageManager: 'npm'
     );
-    
+
     $command->testInstallPhpRequireDev($selection);
-    
+
     expect(true)->toBeTrue();
 });
 
-it('installNodePackages executes without error when packages provided', function () {
-    $command = new class extends Command {
+it('installNodePackages executes without error when packages provided', function (): void {
+    $command = new class extends Command
+    {
         use InstallsPackages;
-        
+
+        /**
+         * @var InstallNodePackagesAction
+         */
         public $installNodePackages;
+
+        /**
+         * @var PackageDetector
+         */
         public $packageDetector;
-        
-        public function __construct() {
+
+        public function __construct()
+        {
             parent::__construct();
             $this->installNodePackages = new InstallNodePackagesAction();
             $this->packageDetector = new PackageDetector();
         }
-        
-        public function testInstallNodePackages(PackageSelection $selection): void {
+
+        public function testInstallNodePackages(PackageSelection $selection): void
+        {
             $this->installNodePackages($selection);
         }
     };
-    
+
     $selection = new PackageSelection(
         phpRequire: [],
         phpRequireDev: [],
@@ -150,30 +184,40 @@ it('installNodePackages executes without error when packages provided', function
         installWorkflows: false,
         nodePackageManager: 'npm'
     );
-    
+
     $command->testInstallNodePackages($selection);
-    
+
     expect(true)->toBeTrue();
 });
 
-it('installNodePackages skips when no packages provided', function () {
-    $command = new class extends Command {
+it('installNodePackages skips when no packages provided', function (): void {
+    $command = new class extends Command
+    {
         use InstallsPackages;
-        
+
+        /**
+         * @var InstallNodePackagesAction
+         */
         public $installNodePackages;
+
+        /**
+         * @var PackageDetector
+         */
         public $packageDetector;
-        
-        public function __construct() {
+
+        public function __construct()
+        {
             parent::__construct();
             $this->installNodePackages = new InstallNodePackagesAction();
             $this->packageDetector = new PackageDetector();
         }
-        
-        public function testInstallNodePackages(PackageSelection $selection): void {
+
+        public function testInstallNodePackages(PackageSelection $selection): void
+        {
             $this->installNodePackages($selection);
         }
     };
-    
+
     $selection = new PackageSelection(
         phpRequire: [],
         phpRequireDev: [],
@@ -181,8 +225,8 @@ it('installNodePackages skips when no packages provided', function () {
         installWorkflows: false,
         nodePackageManager: 'npm'
     );
-    
+
     $command->testInstallNodePackages($selection);
-    
+
     expect(true)->toBeTrue();
 });

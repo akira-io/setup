@@ -25,6 +25,7 @@ trait CollectsUserChoices
             label: 'Select PHP packages to require:',
             options: PhpPackage::toOptions(),
             default: PhpPackage::allValues(),
+            hint: 'Use space to select, Ctrl+A to toggle all, Enter to confirm',
         );
 
         /** @var array<string> $phpRequireDev */
@@ -32,6 +33,7 @@ trait CollectsUserChoices
             label: 'Select PHP dev packages to require:',
             options: PhpDevPackage::toOptions(),
             default: PhpDevPackage::allValues(),
+            hint: 'Use space to select, Ctrl+A to toggle all, Enter to confirm',
         );
 
         /** @var array<string> $nodeDevDependencies */
@@ -44,6 +46,7 @@ trait CollectsUserChoices
                 label: 'Select Node.js dev dependencies:',
                 options: NodeDevPackage::toOptions(),
                 default: NodeDevPackage::allValues(),
+                hint: 'Use space to select, Ctrl+A to toggle all, Enter to confirm',
             );
 
             $detectedManager = $this->packageDetector->detectNodePackageManager();

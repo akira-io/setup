@@ -3,18 +3,19 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/akira/setup.svg?style=flat-square)](https://packagist.org/packages/akira/setup)
 [![Total Downloads](https://img.shields.io/packagist/dt/akira/setup.svg?style=flat-square)](https://packagist.org/packages/akira/setup)
 
-An interactive Laravel package installer that sets up your project with best practices, testing tools, code quality standards, and CI/CD workflows in seconds.
+An interactive Laravel package installer that sets up your project with best practices, testing tools, code quality
+standards, and CI/CD workflows in seconds.
 
 ## Features
 
-✨ **Interactive Setup** - Beautiful CLI interface using Laravel Prompts  
-📦 **Smart Package Management** - Automatically installs PHP and Node.js packages  
-🔍 **Auto-Detection** - Detects your preferred Node package manager (npm, pnpm, yarn, bun)  
-⚙️ **Configuration Files** - Generates Laravel Pint, Rector, and Release-It configs  
-🚀 **GitHub Actions** - Installs pre-configured CI/CD workflows  
-📝 **Composer Scripts** - Adds convenient testing and linting scripts  
-🎯 **Fully Typed** - PHP 8.4 with strict types and modern features  
-🧪 **Tested** - Comes with Pest tests
+**Interactive Setup** - Beautiful CLI interface using Laravel Prompts  
+**Smart Package Management** - Automatically installs PHP and Node.js packages  
+**Auto-Detection** - Detects your preferred Node package manager (npm, pnpm, yarn, bun)  
+️ **Configuration Files** - Generates Laravel Pint, Rector, and Release-It configs  
+**GitHub Actions** - Installs pre-configured CI/CD workflows  
+**Composer Scripts** - Adds convenient testing and linting scripts  
+**Fully Typed** - PHP 8.4 with strict types and modern features  
+**Tested** - Comes with Pest tests
 
 ## Requirements
 
@@ -83,7 +84,9 @@ The command will guide you through:
 ### Configuration Files
 
 #### `pint.json`
+
 Laravel Pint configuration with comprehensive rules for:
+
 - Strict typing
 - Modern PHP 8.4 features
 - Final classes
@@ -92,7 +95,9 @@ Laravel Pint configuration with comprehensive rules for:
 - Code quality standards
 
 #### `rector.php`
+
 Rector configuration with:
+
 - PHP 8.4 upgrade rules
 - Laravel 12 compatibility
 - Code quality improvements
@@ -101,7 +106,9 @@ Rector configuration with:
 - Privatization rules
 
 #### `.release-it.json`
+
 Release-It configuration for:
+
 - Semantic versioning
 - Conventional changelog generation
 - Automatic GitHub releases
@@ -153,7 +160,9 @@ The following scripts are added/merged into `composer.json`:
 ### GitHub Actions Workflows
 
 #### `.github/workflows/tests.yml`
+
 Comprehensive testing pipeline with:
+
 - PHP 8.4 test matrix
 - Laravel 12 compatibility
 - Multiple OS support
@@ -161,7 +170,9 @@ Comprehensive testing pipeline with:
 - Static analysis with PHPStan
 
 #### `.github/workflows/release-discord.yml`
+
 Automatic Discord notifications for new releases with:
+
 - Release version
 - Release notes
 - Repository link

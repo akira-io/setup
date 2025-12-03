@@ -7,18 +7,26 @@ use Akira\Setup\Console\Concerns\DisplaysSummary;
 use Akira\Setup\Console\Concerns\InstallsPackages;
 use Akira\Setup\Console\Concerns\PublishesAssets;
 
-it('CollectsUserChoices trait has method', function () {
-    $trait = new class {
+it('CollectsUserChoices trait has method', function (): void {
+    $trait = new class
+    {
         use CollectsUserChoices;
-        public function test() { return method_exists($this, 'collectUserChoices'); }
+
+        public function test(): bool
+        {
+            return method_exists($this, 'collectUserChoices');
+        }
     };
     expect($trait->test())->toBeTrue();
 });
 
-it('InstallsPackages trait has methods', function () {
-    $trait = new class {
+it('InstallsPackages trait has methods', function (): void {
+    $trait = new class
+    {
         use InstallsPackages;
-        public function test() {
+
+        public function test(): bool
+        {
             return method_exists($this, 'installPhpRequire')
                 && method_exists($this, 'installPhpRequireDev')
                 && method_exists($this, 'installNodePackages');
@@ -27,10 +35,13 @@ it('InstallsPackages trait has methods', function () {
     expect($trait->test())->toBeTrue();
 });
 
-it('PublishesAssets trait has methods', function () {
-    $trait = new class {
+it('PublishesAssets trait has methods', function (): void {
+    $trait = new class
+    {
         use PublishesAssets;
-        public function test() {
+
+        public function test(): bool
+        {
             return method_exists($this, 'addComposerScripts')
                 && method_exists($this, 'publishConfigFiles');
         }
@@ -38,10 +49,15 @@ it('PublishesAssets trait has methods', function () {
     expect($trait->test())->toBeTrue();
 });
 
-it('DisplaysSummary trait has method', function () {
-    $trait = new class {
+it('DisplaysSummary trait has method', function (): void {
+    $trait = new class
+    {
         use DisplaysSummary;
-        public function test() { return method_exists($this, 'displaySummary'); }
+
+        public function test(): bool
+        {
+            return method_exists($this, 'displaySummary');
+        }
     };
     expect($trait->test())->toBeTrue();
 });

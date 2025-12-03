@@ -57,10 +57,11 @@ Select with SPACE, confirm with ENTER:
 **Default:** All selected (indicated by filled checkboxes)
 
 **Selection Tips:**
-- Use SPACE to toggle selections
+- Use SPACE to toggle individual selections
+- Use **Ctrl+A to toggle all options** (Select All / Select None)
 - Use UP/DOWN arrows to navigate
 - Press ENTER to confirm
-- You can deselect all if you want
+- This makes it easy to select just 1 package: Ctrl+A to deselect all, then Space to select what you need
 
 ### Step 3: PHP Development Packages
 
@@ -105,6 +106,11 @@ Which development PHP packages would you like to install?
 - Roave Security Advisories - Vulnerability checker
 
 **Default:** All selected
+
+**Selection Tips:**
+- Use SPACE to toggle individual selections
+- Use **Ctrl+A to toggle all options** (Select All / Select None)
+- Perfect for selecting only a few packages: Press Ctrl+A to deselect all, then Space on the ones you want
 
 ### Step 4: Node Package Manager Detection
 
@@ -161,6 +167,11 @@ Select with SPACE, confirm with ENTER:
 | `@release-it/conventional-changelog` | Changelog generation |
 
 **Default:** All selected
+
+**Selection Tips:**
+- Use SPACE to toggle individual selections
+- Use **Ctrl+A to toggle all options** (Select All / Select None)
+- Easy to customize: Ctrl+A deselects all, then Space to pick what you need
 
 ### Step 6: GitHub Workflows
 
