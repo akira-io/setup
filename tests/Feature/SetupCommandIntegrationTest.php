@@ -7,8 +7,16 @@ use Akira\Setup\DTOs\PackageSelection;
 use Illuminate\Support\Facades\File;
 
 beforeEach(function (): void {
+    // Store original composer.json if it exists
+    $this->originalComposerPath = base_path('composer.json');
+    $this->composerBackup = null;
+
+    if (File::exists($this->originalComposerPath)) {
+        $this->composerBackup = File::get($this->originalComposerPath);
+    }
+
     // Create temporary composer.json
-    File::put(base_path('composer.json'), json_encode([
+    File::put($this->originalComposerPath, json_encode([
         'name' => 'test/project',
         'require' => [],
         'require-dev' => [],
@@ -25,7 +33,6 @@ beforeEach(function (): void {
 
 afterEach(function (): void {
     $filesToClean = [
-        'composer.json',
         'package.json',
         'pint.json',
         'rector.php',
@@ -40,6 +47,11 @@ afterEach(function (): void {
 
     if (File::isDirectory(base_path('.github'))) {
         File::deleteDirectory(base_path('.github'));
+    }
+
+    // Restore original composer.json
+    if ($this->composerBackup !== null) {
+        File::put($this->originalComposerPath, $this->composerBackup);
     }
 });
 
