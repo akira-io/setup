@@ -16,7 +16,7 @@ beforeEach(function (): void {
     }
 
     // Ensure base directory exists
-    if (!File::isDirectory(base_path())) {
+    if (! File::isDirectory(base_path())) {
         File::makeDirectory(base_path(), 0755, true);
     }
 
