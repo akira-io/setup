@@ -34,6 +34,15 @@ php artisan akira:setup
 
 This command will guide you through the setup process with interactive prompts.
 
+## Quick Selection Tip
+
+All package selection prompts have all packages **pre-selected by default**. This means:
+
+- **To select everything:** Just press Enter
+- **To select only a few:** Press `Ctrl+A` to deselect all, then use Space to select what you need
+- **To select most:** Press Space to deselect specific ones
+- **Use `Ctrl+A`** at any time to toggle between "all selected" and "all deselected"
+
 ## Setup Flow
 
 When you run `php artisan akira:setup`, you'll go through these steps:
