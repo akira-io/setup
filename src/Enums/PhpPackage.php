@@ -8,6 +8,7 @@ enum PhpPackage: string
 {
     case NUNOMADURO_ESSENTIALS = 'nunomaduro/essentials';
     case LARAVEL_AUTH_LOGS = 'akira/laravel-auth-logs';
+    case SPATIE_ROUTE_ATTRIBUTES = 'spatie/laravel-route-attributes';
 
     /**
      * @return array<string, string>
@@ -39,6 +40,7 @@ enum PhpPackage: string
         return match ($this) {
             self::NUNOMADURO_ESSENTIALS => 'Nunomaduro Essentials',
             self::LARAVEL_AUTH_LOGS => 'Akira Laravel Auth Logs',
+            self::SPATIE_ROUTE_ATTRIBUTES => 'Spatie Route Attributes',
         };
     }
 }

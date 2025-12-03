@@ -21,6 +21,7 @@ enum PhpDevPackage: string
     case PEST_PLUGIN_TYPE_COVERAGE = 'pestphp/pest-plugin-type-coverage';
     case RECTOR = 'rector/rector';
     case SECURITY_ADVISORIES = 'roave/security-advisories';
+    case LARAVEL_DEBUG_BAR = 'barryvdh/laravel-debugbar';
 
     /**
      * @return array<string, string>
@@ -65,6 +66,7 @@ enum PhpDevPackage: string
             self::PEST_PLUGIN_TYPE_COVERAGE => 'Pest Plugin Type Coverage',
             self::RECTOR => 'Rector',
             self::SECURITY_ADVISORIES => 'Roave Security Advisories',
+            self::LARAVEL_DEBUG_BAR => 'Laravel Debug Bar',
         };
     }
 }

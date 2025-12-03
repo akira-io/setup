@@ -32,7 +32,8 @@ describe('PhpPackage Enum', function (): void {
         expect($values)->toBeArray()
             ->and($values)->toContain('nunomaduro/essentials')
             ->and($values)->toContain('akira/laravel-auth-logs')
-            ->and($values)->toHaveCount(2);
+            ->and($values)->toContain('spatie/laravel-route-attributes')
+            ->and($values)->toHaveCount(3);
     });
 });
 
@@ -64,7 +65,7 @@ describe('PhpDevPackage Enum', function (): void {
         expect($values)->toBeArray()
             ->and($values)->toContain('pestphp/pest')
             ->and($values)->toContain('laravel/pint')
-            ->and($values)->toHaveCount(15);
+            ->and($values)->toHaveCount(16);
     });
 
     it('includes all expected packages', function (): void {
@@ -74,7 +75,9 @@ describe('PhpDevPackage Enum', function (): void {
             ->and($values)->toContain('driftingly/rector-laravel')
             ->and($values)->toContain('fakerphp/faker')
             ->and($values)->toContain('larastan/larastan')
-            ->and($values)->toContain('roave/security-advisories');
+            ->and($values)->toContain('roave/security-advisories')
+            ->and($values)->toContain('barryvdh/laravel-debugbar');
+
     });
 });
 
