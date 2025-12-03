@@ -317,7 +317,6 @@ it('executeSetup handles package-json-scripts step', function (): void {
     // Test calculateSteps includes package-json-scripts
     $calculateSteps = $reflection->getMethod('calculateSteps');
     $steps = $calculateSteps->invoke($command, $selection);
-
     expect($steps)->toContain('package-json-scripts');
 });
 

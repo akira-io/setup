@@ -72,7 +72,7 @@ final class SetupCommand extends Command
         progress(
             label: 'Setting up your Laravel project...',
             steps: $steps,
-            callback: function ($step) use ($selection): void {
+            callback: function (string $step) use ($selection): void {
                 match ($step) {
                     'php-require' => $this->installPhpRequire($selection),
                     'php-require-dev' => $this->installPhpRequireDev($selection),
