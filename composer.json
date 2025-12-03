@@ -54,13 +54,15 @@
     "test:refactor": "rector --dry-run",
     "test:types": "phpstan",
     "test:type-coverage": "pest --type-coverage --min=100 --compact",
-    "test:coverage": "pest --parallel --coverage --compact --min=86.0",
+    "test:coverage": "pest --parallel --coverage --compact --exactly=86.5",
     "test:typos": "peck",
+    "test:arch": "pest --filter=arch",
     "test": [
       "@test:lint",
       "@test:refactor",
       "@test:typos",
       "@test:types",
+      "@test:arch",
       "@test:coverage",
       "@test:type-coverage"
     ]
