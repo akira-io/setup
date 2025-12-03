@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+# [1.1.0](https://github.com/akira-io/setup/compare/1.0.0...1.1.0) (2025-12-03)
+
+
+### Features
+
+* add InstallPhpDevPackagesAction and refactor package installation logic ([db3e426](https://github.com/akira-io/setup/commit/db3e426a0c9c3a3e3964a19cceed654ea5e13926))
+
 # 1.0.0 (2025-12-03)
 
 
