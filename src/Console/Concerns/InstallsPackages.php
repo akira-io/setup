@@ -19,7 +19,7 @@ trait InstallsPackages
 
         info('Installing PHP packages...');
 
-        $success = $this->installPhpPackages->execute($selection->phpRequire, []);
+        $success = $this->installPhpPackages->execute($selection->phpRequire);
 
         if (! $success) {
             warning('Failed to install some PHP packages.');
@@ -34,7 +34,7 @@ trait InstallsPackages
 
         info('Installing PHP dev packages...');
 
-        $success = $this->installPhpPackages->execute([], $selection->phpRequireDev);
+        $success = $this->installPhpDevPackages->execute($selection->phpRequireDev);
 
         if (! $success) {
             warning('Failed to install some PHP dev packages.');

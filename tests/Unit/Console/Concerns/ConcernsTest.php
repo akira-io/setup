@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Akira\Setup\Actions\InstallNodePackagesAction;
+use Akira\Setup\Actions\InstallPhpDevPackagesAction;
 use Akira\Setup\Actions\InstallPhpPackagesAction;
 use Akira\Setup\Actions\PublishConfigFilesAction;
 use Akira\Setup\Actions\PublishWorkflowsAction;
@@ -134,14 +135,11 @@ describe('InstallsPackages', function (): void {
         {
             use InstallsPackages;
 
-            /**
-             * @var InstallPhpPackagesAction
-             */
-            public $installPhpPackages;
+            public InstallPhpDevPackagesAction $installPhpDevPackages;
 
             public function __construct()
             {
-                $this->installPhpPackages = new InstallPhpPackagesAction();
+                $this->installPhpDevPackages = new InstallPhpDevPackagesAction();
             }
 
             public function testInstallPhpRequireDev(PackageSelection $selection): void

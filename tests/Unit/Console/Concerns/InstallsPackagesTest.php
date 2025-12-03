@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Akira\Setup\Actions\InstallNodePackagesAction;
+use Akira\Setup\Actions\InstallPhpDevPackagesAction;
 use Akira\Setup\Actions\InstallPhpPackagesAction;
 use Akira\Setup\Console\Concerns\InstallsPackages;
 use Akira\Setup\DTOs\PackageSelection;
@@ -84,15 +85,12 @@ it('installPhpRequireDev executes without error when packages provided', functio
     {
         use InstallsPackages;
 
-        /**
-         * @var InstallPhpPackagesAction
-         */
-        public $installPhpPackages;
+        public InstallPhpDevPackagesAction $installPhpDevPackages;
 
         public function __construct()
         {
             parent::__construct();
-            $this->installPhpPackages = new InstallPhpPackagesAction();
+            $this->installPhpDevPackages = new InstallPhpDevPackagesAction();
         }
 
         public function testInstallPhpRequireDev(PackageSelection $selection): void

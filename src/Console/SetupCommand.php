@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akira\Setup\Console;
 
 use Akira\Setup\Actions\InstallNodePackagesAction;
+use Akira\Setup\Actions\InstallPhpDevPackagesAction;
 use Akira\Setup\Actions\InstallPhpPackagesAction;
 use Akira\Setup\Actions\PublishConfigFilesAction;
 use Akira\Setup\Actions\PublishWorkflowsAction;
@@ -36,12 +37,13 @@ final class SetupCommand extends Command
     protected $description = 'Interactive Laravel project setup with best practices and tools';
 
     public function __construct(
-        private readonly PackageDetector $packageDetector = new PackageDetector(),
-        private readonly FileManager $fileManager = new FileManager(),
-        private readonly InstallPhpPackagesAction $installPhpPackages = new InstallPhpPackagesAction(),
-        private readonly InstallNodePackagesAction $installNodePackages = new InstallNodePackagesAction(),
-        private readonly PublishConfigFilesAction $publishConfigFiles = new PublishConfigFilesAction(),
-        private readonly PublishWorkflowsAction $publishWorkflows = new PublishWorkflowsAction(),
+        private readonly PackageDetector $packageDetector,
+        private readonly FileManager $fileManager,
+        private readonly InstallPhpPackagesAction $installPhpPackages,
+        private readonly InstallPhpDevPackagesAction $installPhpDevPackages,
+        private readonly InstallNodePackagesAction $installNodePackages,
+        private readonly PublishConfigFilesAction $publishConfigFiles,
+        private readonly PublishWorkflowsAction $publishWorkflows,
     ) {
         parent::__construct();
     }

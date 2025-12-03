@@ -92,7 +92,7 @@ it('command has proper constructor signature', function (): void {
     $constructor = $reflection->getConstructor();
     $parameters = $constructor->getParameters();
 
-    expect(count($parameters))->toBe(6);
+    expect(count($parameters))->toBe(7);
 });
 
 it('all constructor parameters are readonly', function (): void {
