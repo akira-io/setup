@@ -6,7 +6,6 @@ namespace Akira\Setup\Console\Concerns;
 
 use Akira\Setup\DTOs\PackageSelection;
 
-use function Laravel\Prompts\info;
 use function Laravel\Prompts\warning;
 
 trait InstallsPackages
@@ -16,8 +15,6 @@ trait InstallsPackages
         if ($selection->phpRequire === []) {
             return;
         }
-
-        info('Installing PHP packages...');
 
         $success = $this->installPhpPackages->execute($selection->phpRequire);
 
@@ -32,8 +29,6 @@ trait InstallsPackages
             return;
         }
 
-        info('Installing PHP dev packages...');
-
         $success = $this->installPhpDevPackages->execute($selection->phpRequireDev);
 
         if (! $success) {
@@ -46,8 +41,6 @@ trait InstallsPackages
         if ($selection->nodeDevDependencies === []) {
             return;
         }
-
-        info('Installing Node.js packages...');
 
         $installCommand = $this->packageDetector->getInstallCommand($selection->nodePackageManager);
 

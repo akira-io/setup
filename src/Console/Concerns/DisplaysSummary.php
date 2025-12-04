@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akira\Setup\Console\Concerns;
 
 use Akira\Setup\DTOs\PackageSelection;
+use Akira\Setup\Support\SkippedPackagesTracker;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
+use function Laravel\Prompts\warning;
 
 trait DisplaysSummary
 {
@@ -35,6 +37,14 @@ trait DisplaysSummary
         }
 
         note(implode("\n", $summary));
+
+        if (SkippedPackagesTracker::hasSkipped()) {
+            $skipped = SkippedPackagesTracker::get();
+            warning('⚠ Skipped packages:');
+            foreach ($skipped as $package => $reason) {
+                warning("  • {$package} ({$reason})");
+            }
+        }
 
         info('Next steps:');
         info('  → Run "composer test" to verify your setup');

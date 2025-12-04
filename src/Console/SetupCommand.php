@@ -17,6 +17,7 @@ use Akira\Setup\Console\Concerns\PublishesAssets;
 use Akira\Setup\DTOs\PackageSelection;
 use Akira\Setup\Support\FileManager;
 use Akira\Setup\Support\PackageDetector;
+use Akira\Setup\Support\SkippedPackagesTracker;
 use Illuminate\Console\Command;
 
 use function Laravel\Prompts\intro;
@@ -50,6 +51,8 @@ final class SetupCommand extends Command
 
     public function handle(): int
     {
+        SkippedPackagesTracker::clear();
+
         intro('Akira Laravel Setup');
 
         if (! $this->packageDetector->hasComposerJson()) {
