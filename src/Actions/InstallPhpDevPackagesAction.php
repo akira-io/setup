@@ -13,17 +13,22 @@ final readonly class InstallPhpDevPackagesAction
      */
     public function execute(array $requireDev): bool
     {
+        if ($requireDev !== []) {
+            $process = new Process(
+                array_merge(['composer', 'require', '--dev'], $requireDev),
+                base_path(),
+                null,
+                null,
+                600
+            );
 
-        $process = new Process(
-            array_merge(['composer', 'require', '--dev'], $requireDev),
-            base_path(),
-            null,
-            null,
-            600
-        );
+            $process->run();
 
-        $process->run();
+            if (! $process->isSuccessful()) {
+                return false;
+            }
+        }
 
-        return $process->isSuccessful();
+        return true;
     }
 }
