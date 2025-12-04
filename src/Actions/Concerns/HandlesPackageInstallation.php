@@ -26,17 +26,16 @@ trait HandlesPackageInstallation
 
         $composer = json_decode($composerContent, true);
 
-        if (! isset($composer[$section])) {
+        if (! is_array($composer) || ! isset($composer[$section]) || ! is_array($composer[$section])) {
             return $packages;
         }
 
         $installedPackages = array_keys($composer[$section]);
 
-        return array_filter($packages, function ($package) use ($installedPackages): bool {
+        return array_filter($packages, function (string $package) use ($installedPackages): bool {
             $packageName = explode(':', $package)[0];
 
             return ! in_array($packageName, $installedPackages, true);
         });
     }
-
 }
