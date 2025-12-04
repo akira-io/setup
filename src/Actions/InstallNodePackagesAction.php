@@ -23,6 +23,7 @@ final readonly class InstallNodePackagesAction
         $output = '';
         $errorOutput = '';
 
+        /** @var array<int|string, string> $commandParts */
         $commandParts = array_merge(
             explode(' ', $installCommand),
             $packages
@@ -38,7 +39,7 @@ final readonly class InstallNodePackagesAction
                     600
                 );
 
-                $process->run(function ($type, $buffer) use (&$output, &$errorOutput): void {
+                $process->run(function (string $type, string $buffer) use (&$output, &$errorOutput): void {
                     if ($type === Process::ERR) {
                         $errorOutput .= $buffer;
                     } else {
@@ -63,9 +64,11 @@ final readonly class InstallNodePackagesAction
     private function displayError(string $output): void
     {
         $lines = explode("\n", mb_trim($output));
+        /** @var array<string> $relevantLines */
         $relevantLines = [];
 
         foreach ($lines as $line) {
+            /** @var string $line */
             $line = mb_trim($line);
             if ($line === '') {
                 continue;
@@ -83,8 +86,8 @@ final readonly class InstallNodePackagesAction
         }
 
         if ($relevantLines !== []) {
-            foreach ($relevantLines as $line) {
-                error($line);
+            foreach ($relevantLines as $relevantLine) {
+                error($relevantLine);
             }
         } else {
             error('Failed to install Node packages.');
