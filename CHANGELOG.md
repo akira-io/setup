@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+# [1.2.0](https://github.com/akira-io/setup/compare/1.1.0...1.2.0) (2025-12-04)
+
+
+### Bug Fixes
+
+* ensure successful execution of package installation only when required packages are provided ([421d0e7](https://github.com/akira-io/setup/commit/421d0e7967b873d36510515a0b07e718507860e4))
+
+
+### Features
+
+* enhance package installation feedback and error handling with improved stability checks ([628d4a4](https://github.com/akira-io/setup/commit/628d4a451f94a484c0ad42450ad4848d1f93f5f9))
+* implement SkippedPackagesTracker and enhance package installation error handling ([26eb5bc](https://github.com/akira-io/setup/commit/26eb5bc9447e48bde89b2b54e3fa68093c3fc404))
+* optimize package installation process by supporting batch installation and improved error handling ([611eeb2](https://github.com/akira-io/setup/commit/611eeb25ad11c24f73dc69b29edefb115d9209e6))
+* refactor package installation logic and add HandlesPackageInstallation trait for improved management ([baae11b](https://github.com/akira-io/setup/commit/baae11bc37e7e1e1dfd02ab8b2c243dae0c54263))
+* replace info with progress for package installation feedback ([73a9c02](https://github.com/akira-io/setup/commit/73a9c02bc2b3e203369ebadca98b34513334cba6))
+
 # [1.1.0](https://github.com/akira-io/setup/compare/1.0.0...1.1.0) (2025-12-03)
 
 
