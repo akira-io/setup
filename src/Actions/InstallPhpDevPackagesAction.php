@@ -34,8 +34,26 @@ final readonly class InstallPhpDevPackagesAction
 
         info('Installing '.count($packagesToInstall).' dev packages...');
 
+        $process = new Process(
+            array_merge(['composer', 'require', '--dev'], $packagesToInstall),
+            base_path(),
+            null,
+            null,
+            600
+        );
+
+        $process->run();
+
+        if ($process->isSuccessful()) {
+            info('✓ All dev packages installed successfully');
+
+            return true;
+        }
+
+        warning('Batch installation failed. Trying one by one...');
+
         foreach ($packagesToInstall as $package) {
-            $process = new Process(
+            $singleProcess = new Process(
                 ['composer', 'require', '--dev', $package],
                 base_path(),
                 null,
@@ -43,14 +61,12 @@ final readonly class InstallPhpDevPackagesAction
                 600
             );
 
-            info("Installing {$package}...");
+            $singleProcess->run();
 
-            $process->run();
-
-            if ($process->isSuccessful()) {
-                info("✓ {$package} installed successfully");
+            if ($singleProcess->isSuccessful()) {
+                info("✓ {$package}");
             } else {
-                warning("✗ Skipping {$package}");
+                warning("✗ {$package}");
                 SkippedPackagesTracker::add($package, 'Installation failed');
             }
         }
