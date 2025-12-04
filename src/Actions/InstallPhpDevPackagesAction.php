@@ -7,8 +7,9 @@ namespace Akira\Setup\Actions;
 use Akira\Setup\Support\SkippedPackagesTracker;
 use Symfony\Component\Process\Process;
 
-use function Laravel\Prompts\error;
-use function Laravel\Prompts\progress;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\spin;
+use function Laravel\Prompts\warning;
 
 final readonly class InstallPhpDevPackagesAction
 {
@@ -21,81 +22,85 @@ final readonly class InstallPhpDevPackagesAction
             return true;
         }
 
-        $installedCount = 0;
+        $remainingPackages = $requireDev;
+        $attempts = 0;
+        $maxAttempts = 3;
 
-        progress(
-            label: 'Installing dev packages',
-            steps: $requireDev,
-            callback: function (string $package) use (&$installedCount): void {
-                $output = '';
-                $errorOutput = '';
+        while ($remainingPackages !== [] && $attempts < $maxAttempts) {
+            $attempts++;
+            $output = '';
+            $errorOutput = '';
 
-                $process = new Process(
-                    ['composer', 'require', '--dev', $package],
-                    base_path(),
-                    null,
-                    null,
-                    600
-                );
+            info('Installing: '.implode(', ', $remainingPackages));
 
-                $process->run(function ($type, $buffer) use (&$output, &$errorOutput): void {
-                    if ($type === Process::ERR) {
-                        $errorOutput .= $buffer;
-                    } else {
-                        $output .= $buffer;
-                    }
-                });
+            $result = spin(
+                callback: function () use ($remainingPackages, &$output, &$errorOutput): bool {
+                    $process = new Process(
+                        array_merge(['composer', 'require', '--dev'], $remainingPackages),
+                        base_path(),
+                        null,
+                        null,
+                        600
+                    );
 
-                if (! $process->isSuccessful()) {
-                    if ($this->isStabilityIssue($errorOutput ?: $output)) {
-                        SkippedPackagesTracker::add($package, 'Stability constraint');
-                    } else {
-                        $this->displayError($errorOutput ?: $output, $package);
-                    }
-                } else {
-                    $installedCount++;
+                    $process->run(function ($type, $buffer) use (&$output, &$errorOutput): void {
+                        if ($type === Process::ERR) {
+                            $errorOutput .= $buffer;
+                        } else {
+                            $output .= $buffer;
+                        }
+                    });
+
+                    return $process->isSuccessful();
+                },
+                message: 'Installing dev packages...'
+            );
+
+            if ($result) {
+                return true;
+            }
+
+            $problematicPackages = $this->parseAndTrackErrors($errorOutput ?: $output, $remainingPackages);
+
+            if ($problematicPackages === []) {
+                warning('Failed to install dev packages. No stability issues detected.');
+                warning('Error output: '.mb_substr($errorOutput ?: $output, 0, 500));
+
+                return false;
+            }
+
+            foreach ($problematicPackages as $pkg) {
+                warning("Skipping {$pkg} due to stability constraints. Retrying without it...");
+            }
+
+            $remainingPackages = array_diff($remainingPackages, $problematicPackages);
+        }
+
+        return $remainingPackages === [];
+    }
+
+    /**
+     * @param  array<string>  $requestedPackages
+     * @return array<string>
+     */
+    private function parseAndTrackErrors(string $output, array $requestedPackages): array
+    {
+        $problematicPackages = [];
+
+        if (str_contains($output, 'minimum-stability') ||
+            str_contains($output, 'stability flag') ||
+            str_contains($output, 'requires a stability flag') ||
+            str_contains($output, 'no matching package found')) {
+
+            foreach ($requestedPackages as $package) {
+                $packageName = explode(':', $package)[0];
+                if (str_contains($output, $packageName)) {
+                    SkippedPackagesTracker::add($package, 'Stability constraint');
+                    $problematicPackages[] = $package;
                 }
-            },
-            hint: 'This may take a few minutes...'
-        );
-
-        return $installedCount > 0;
-    }
-
-    private function isStabilityIssue(string $output): bool
-    {
-        return str_contains($output, 'minimum-stability') || str_contains($output, 'stability flag');
-    }
-
-    private function displayError(string $output, string $package): void
-    {
-        $lines = explode("\n", mb_trim($output));
-        $relevantLines = [];
-
-        foreach ($lines as $line) {
-            $line = mb_trim($line);
-            if ($line === '') {
-                continue;
-            }
-            if (str_starts_with($line, 'Reading ')) {
-                continue;
-            }
-            if (str_starts_with($line, 'Loading ')) {
-                continue;
-            }
-
-            if (str_contains($line, 'Problem') || str_contains($line, 'conflict') || str_contains($line, 'requires')) {
-                $relevantLines[] = $line;
             }
         }
 
-        if ($relevantLines !== []) {
-            error("Failed to install {$package}:");
-            foreach ($relevantLines as $line) {
-                error("  {$line}");
-            }
-        } else {
-            error("Failed to install {$package}. Check your composer.json for conflicts.");
-        }
+        return $problematicPackages;
     }
 }
