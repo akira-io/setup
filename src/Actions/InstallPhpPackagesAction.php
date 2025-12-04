@@ -8,7 +8,7 @@ use Akira\Setup\Support\SkippedPackagesTracker;
 use Symfony\Component\Process\Process;
 
 use function Laravel\Prompts\error;
-use function Laravel\Prompts\info;
+use function Laravel\Prompts\progress;
 
 final readonly class InstallPhpPackagesAction
 {
@@ -21,40 +21,43 @@ final readonly class InstallPhpPackagesAction
             return true;
         }
 
-        info('Installing packages: '.implode(', ', $require));
-
         $installedCount = 0;
 
-        foreach ($require as $package) {
-            $output = '';
-            $errorOutput = '';
+        progress(
+            label: 'Installing packages',
+            steps: $require,
+            callback: function (string $package) use (&$installedCount): void {
+                $output = '';
+                $errorOutput = '';
 
-            $process = new Process(
-                ['composer', 'require', $package],
-                base_path(),
-                null,
-                null,
-                600
-            );
+                $process = new Process(
+                    ['composer', 'require', $package],
+                    base_path(),
+                    null,
+                    null,
+                    600
+                );
 
-            $process->run(function ($type, $buffer) use (&$output, &$errorOutput): void {
-                if ($type === Process::ERR) {
-                    $errorOutput .= $buffer;
+                $process->run(function ($type, $buffer) use (&$output, &$errorOutput): void {
+                    if ($type === Process::ERR) {
+                        $errorOutput .= $buffer;
+                    } else {
+                        $output .= $buffer;
+                    }
+                });
+
+                if (! $process->isSuccessful()) {
+                    if ($this->isStabilityIssue($errorOutput ?: $output)) {
+                        SkippedPackagesTracker::add($package, 'Stability constraint');
+                    } else {
+                        $this->displayError($errorOutput ?: $output, $package);
+                    }
                 } else {
-                    $output .= $buffer;
+                    $installedCount++;
                 }
-            });
-
-            if (! $process->isSuccessful()) {
-                if ($this->isStabilityIssue($errorOutput ?: $output)) {
-                    SkippedPackagesTracker::add($package, 'Stability constraint');
-                } else {
-                    $this->displayError($errorOutput ?: $output, $package);
-                }
-            } else {
-                $installedCount++;
-            }
-        }
+            },
+            hint: 'This may take a few minutes...'
+        );
 
         return $installedCount > 0;
     }
