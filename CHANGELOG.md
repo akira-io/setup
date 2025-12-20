@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+# [1.3.0](https://github.com/akira-io/setup/compare/1.2.0...1.3.0) (2025-12-20)
+
+
+### Features
+
+* add illuminate/filesystem dependency and implement basePath method in setup script ([c2bdf47](https://github.com/akira-io/setup/commit/c2bdf4727772b076aa927ca6f609d195d2326d6d))
+* add setup script for package installation and update README with usage instructions ([e67900d](https://github.com/akira-io/setup/commit/e67900d04fefa0c78cf746daf6ff445fae01c61d))
+
 # [1.2.0](https://github.com/akira-io/setup/compare/1.1.0...1.2.0) (2025-12-04)
 
 
