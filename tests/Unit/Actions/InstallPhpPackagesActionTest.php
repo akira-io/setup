@@ -6,30 +6,30 @@ use Akira\Setup\Actions\InstallPhpPackagesAction;
 
 it('installs php packages', function (): void {
     $action = new InstallPhpPackagesAction();
-    $result = $action->execute(['vendor/package'], ['vendor/dev']);
+    $result = $action->execute(['vendor/package']);
     expect($result)->toBeBool();
 });
 
 it('handles empty lists', function (): void {
     $action = new InstallPhpPackagesAction();
-    $result = $action->execute([], []);
+    $result = $action->execute([]);
     expect($result)->toBeBool();
 });
 
 it('installs only require packages', function (): void {
     $action = new InstallPhpPackagesAction();
-    $result = $action->execute(['vendor/package'], []);
+    $result = $action->execute(['vendor/package']);
     expect($result)->toBeBool();
 });
 
 it('installs only require-dev packages', function (): void {
     $action = new InstallPhpPackagesAction();
-    $result = $action->execute([], ['vendor/dev-package']);
+    $result = $action->execute([]);
     expect($result)->toBeBool();
 });
 
 it('handles mixed packages', function (): void {
     $action = new InstallPhpPackagesAction();
-    $result = $action->execute(['vendor/prod'], ['vendor/dev']);
+    $result = $action->execute(['vendor/prod']);
     expect($result)->toBeBool();
 });
