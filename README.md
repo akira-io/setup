@@ -35,10 +35,25 @@ The package will automatically register itself via Laravel's package auto-discov
 
 ## Usage
 
-Run the interactive setup command:
+Run the interactive setup:
+
+Laravel (inside a Laravel app):
 
 ```bash
 php artisan akira:setup
+```
+
+Packages/any Composer project (outside a Laravel app):
+
+```bash
+vendor/bin/setup
+```
+
+Help and command list for the bin:
+
+```bash
+vendor/bin/setup --help
+vendor/bin/setup list
 ```
 
 The command will guide you through:

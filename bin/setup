@@ -1,0 +1,77 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// Attempt to locate Composer's autoloader in common locations.
+$autoloadPaths = [
+    // When installed as a dependency (vendor/bin/setup symlink)
+    __DIR__ . '/../../../autoload.php',
+    // When running from the package repo directly
+    __DIR__ . '/../vendor/autoload.php',
+];
+
+$loaded = false;
+foreach ($autoloadPaths as $autoload) {
+    if (file_exists($autoload)) {
+        require $autoload;
+        $loaded = true;
+        break;
+    }
+}
+
+if (! $loaded) {
+    fwrite(STDERR, "Could not find Composer autoload.php.\n");
+    exit(1);
+}
+
+// Provide a minimal base_path() helper when not inside a full Laravel app.
+if (! function_exists('base_path')) {
+    function base_path(string $path = ''): string
+    {
+        $base = getcwd() ?: __DIR__;
+
+        return $path === '' ? $base : $base . DIRECTORY_SEPARATOR . $path;
+    }
+}
+
+// Wire up the console command similar to `php artisan akira:setup`.
+use Akira\Setup\Actions\InstallNodePackagesAction;
+use Akira\Setup\Actions\InstallPhpDevPackagesAction;
+use Akira\Setup\Actions\InstallPhpPackagesAction;
+use Akira\Setup\Actions\PublishConfigFilesAction;
+use Akira\Setup\Actions\PublishWorkflowsAction;
+use Akira\Setup\Console\SetupCommand;
+use Akira\Setup\Support\FileManager;
+use Akira\Setup\Support\PackageDetector;
+use Illuminate\Container\Container;
+use Symfony\Component\Console\Application;
+
+$command = new SetupCommand(
+    new PackageDetector(),
+    new FileManager(),
+    new InstallPhpPackagesAction(),
+    new InstallPhpDevPackagesAction(),
+    new InstallNodePackagesAction(),
+    new PublishConfigFilesAction(),
+    new PublishWorkflowsAction(),
+);
+
+// Minimal application to satisfy Illuminate\Console expectations outside Laravel.
+class MinimalApplication extends Container
+{
+    public function runningUnitTests(): bool
+    {
+        return false;
+    }
+}
+
+$container = new MinimalApplication();
+Container::setInstance($container);
+$command->setLaravel($container);
+
+$application = new Application('Akira Setup');
+$application->add($command);
+$application->setDefaultCommand($command->getName() ?? 'akira:setup', false);
+
+exit($application->run());
