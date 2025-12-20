@@ -64,6 +64,13 @@ class MinimalApplication extends Container
     {
         return false;
     }
+
+    public function basePath(string $path = ''): string
+    {
+        $base = getcwd() ?: __DIR__;
+
+        return $path === '' ? $base : $base . DIRECTORY_SEPARATOR . $path;
+    }
 }
 
 $container = new MinimalApplication();
