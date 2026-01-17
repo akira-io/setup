@@ -34,8 +34,8 @@ return RectorConfig::configure()
         LocallyCalledStaticMethodToNonStaticRector::class,
         RemoveUnusedPrivateMethodParameterRector::class,
         RemoveUnusedPrivatePropertyRector::class,
-               StaticClosureRector::class => [
-            __DIR__ . '/tests',
+        StaticClosureRector::class => [
+            __DIR__.'/tests',
         ],
     ])
     ->withSets([
