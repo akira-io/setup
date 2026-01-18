@@ -44,7 +44,7 @@ return RectorConfig::configure()
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
         SetList::EARLY_RETURN,
-        SetList::PRIVATIZATION,
+        //        SetList::PRIVATIZATION,
         SetList::TYPE_DECLARATION,
         LaravelLevelSetList::UP_TO_LARAVEL_120,
         LaravelSetList::LARAVEL_CODE_QUALITY,
